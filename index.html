@@ -1,2150 +1,1140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abhishek Choudhary | Data Science Portfolio</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-  <!-- Favicon (AC logo) -->
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/10456/10456439.png">
+  <title>Abhishek Choudhary | Premium 3D Data Science Portfolio</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+  
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/10456/10456439.png">
   <link rel="icon" href="data:image/svg+xml,
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
       <circle cx='50' cy='50' r='48' fill='#ff9800'/>
-      <text x='50%' y='58%' font-size='50' text-anchor='middle' fill='black'
-       font-family='Arial' font-weight='bold'>AC</text>
+      <text x='50%' y='58%' font-size='50' text-anchor='middle' fill='black' font-family='Arial' font-weight='bold'>AC</text>
     </svg>">
 
-  <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
+    /* =====================================
+       CSS VARIABLES & THEME SETUP
+    ===================================== */
     :root {
-      --bg-color: #05050b;
-      --bg-alt: #10101c;
+      --bg-color: #020205;
+      --bg-alt: #0a0a14;
       --text-color: #f5f5f5;
       --muted-text: #b0b0c3;
       --accent: #ff9800;
-      --card-bg: #141424;
-      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-secondary: #ff3d71;
+      --accent-glow: rgba(255, 152, 0, 0.6);
+      
+      /* Premium 3D Glassmorphism */
+      --glass-bg: rgba(20, 20, 36, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-light: rgba(255, 255, 255, 0.25);
+      --nav-bg: rgba(5, 5, 11, 0.6);
     }
 
-    .mouse-glow {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(255, 152, 0, 0.15), transparent 60%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 0;
+    [data-theme="light"] {
+      --bg-color: #e9ecef;
+      --bg-alt: #ffffff;
+      --text-color: #1a1a1a;
+      --muted-text: #4a4a4a;
+      --accent: #ff7b00;
+      --accent-secondary: #ff3d71;
+      --accent-glow: rgba(255, 123, 0, 0.5);
+      
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(0, 0, 0, 0.1);
+      --glass-border-light: rgba(255, 255, 255, 0.9);
+      --nav-bg: rgba(255, 255, 255, 0.7);
     }
 
-    body.light {
-      background: radial-gradient(circle at 20% 20%, #ffffff, transparent 40%),
-        radial-gradient(circle at 80% 0%, #e3f2fd, transparent 40%),
-        radial-gradient(circle at 0% 100%, #f5f5f5, transparent 40%),
-        linear-gradient(135deg, #ffffff, #e0e0e0);
-    }
-
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
+    /* =====================================
+       GLOBAL STYLES & RESET
+    ===================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    
     body {
-      margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text-color);
-
-      background: radial-gradient(circle at 20% 20%, #1a1a40, transparent 40%),
-        radial-gradient(circle at 80% 0%, #0f3460, transparent 40%),
-        radial-gradient(circle at 0% 100%, #16213e, transparent 40%),
-        linear-gradient(135deg, #05050b, #0f2027);
-
-      background-attachment: fixed;
+      color: var(--text-color); background-color: var(--bg-color);
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden; position: relative; perspective: 1200px;
     }
+    
+    /* Scroll Lock Class (Until Welcome Screen Closes) */
+    body.locked { overflow: hidden; height: 100vh; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    @keyframes gradientBG {
-      0% {
-        background-position: 0% 50%;
-      }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--accent-secondary)); border-radius: 10px; }
 
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
+    /* Progress Bar */
     #progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: #ff9800;
-      width: 0%;
-      z-index: 9999;
+      position: fixed; top: 0; left: 0; height: 4px;
+      background: linear-gradient(90deg, #ff9800, #ff3d71, #00e5ff, #ff9800);
+      background-size: 300% 300%; animation: gradientShift 4s linear infinite;
+      width: 0%; z-index: 10000; box-shadow: 0 0 20px var(--accent-glow);
+    }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+    /* =====================================
+       INTERACTIVE BACKGROUND (BUBBLES + PARTICLES)
+    ===================================== */
+    #canvas-container {
+      position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+      z-index: -2; pointer-events: none; transition: transform 0.2s ease-out;
+    }
+    canvas { display: block; width: 100%; height: 100%; }
+    
+    .bg-gradient-overlay {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(circle at 15% 30%, rgba(255, 152, 0, 0.08), transparent 45%),
+                  radial-gradient(circle at 85% 70%, rgba(0, 229, 255, 0.08), transparent 45%);
     }
 
-    /* Loader */
+    /* Magnetic Mouse Glow */
+    .cursor-glow {
+      position: fixed; width: 450px; height: 450px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+      border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%);
+      z-index: 0; mix-blend-mode: screen; transition: width 0.3s, height 0.3s;
+    }
+    [data-theme="light"] .cursor-glow { mix-blend-mode: normal; opacity: 0.4; }
+
+    /* =====================================
+       PRELOADER & REFINED WELCOME SCREEN
+    ===================================== */
     #loader {
-      position: fixed;
-      z-index: 9999;
-      background: #05050b;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: fixed; z-index: 9999; background: var(--bg-color);
+      inset: 0; display: flex; justify-content: center; align-items: center;
+      transition: opacity 0.4s ease;
     }
-
-    /* FULL SCREEN */
-    #welcome-screen {
-      position: fixed;
-      inset: 0;
-      background: black;
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* VIDEO BACKGROUND */
-    #welcome-video {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.4;
-    }
-
-    /* CONTENT */
-    .welcome-content {
-      position: relative;
-      text-align: center;
-      color: white;
-      z-index: 2;
-      animation: fadeUp 1.5s ease;
-    }
-
-    .welcome-content h1 {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    .welcome-content p {
-      opacity: 0.8;
-      margin-bottom: 20px;
-    }
-
-    /* BUTTON */
-    #enter-btn {
-      padding: 12px 25px;
-      border-radius: 30px;
-      border: none;
-      background: linear-gradient(135deg, #ff9800, #ff5722);
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #enter-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255, 152, 0, 0.6);
-    }
-
-    /* FADE OUT */
-    .hide-welcome {
-      animation: fadeOut 1s forwards;
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-
     .spinner {
-      border: 6px solid rgba(255, 255, 255, 0.2);
-      border-top: 6px solid #ff9800;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      border: 4px solid var(--glass-border); border-top: 4px solid var(--accent);
+      border-bottom: 4px solid var(--accent-secondary);
+      width: 70px; height: 70px; border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    #welcome-screen {
+      position: fixed; inset: 0; background: #000; z-index: 9998;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      perspective: 1000px; transition: opacity 0.6s ease, transform 0.6s ease;
     }
+    #welcome-video { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0.25; transform: scale(1.05); }
+    .welcome-overlay { position: absolute; inset: 0; background: radial-gradient(circle, transparent 10%, #000 95%); }
+    
+    .welcome-content {
+      position: relative; text-align: center; color: white; z-index: 2;
+      animation: smoothPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d;
+    }
+    @keyframes smoothPop { 
+      0% { opacity: 0; transform: scale(0.8) translateY(30px); filter: blur(10px); } 
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } 
+    }
+    
+    .welcome-content h1 { font-size: 5rem; margin-bottom: 10px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 10px 30px rgba(255, 152, 0, 0.8); }
+    .welcome-content p { opacity: 0.9; margin-bottom: 40px; font-size: 1.6rem; letter-spacing: 5px; color: var(--accent); text-transform: uppercase; font-weight: 800;}
+    
+    #enter-btn {
+      padding: 18px 50px; border-radius: 50px; border: 2px solid rgba(255, 152, 0, 0.6);
+      background: rgba(255, 152, 0, 0.15); color: white; backdrop-filter: blur(15px);
+      font-size: 1.2rem; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 15px;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 152, 0, 0.3);
+    }
+    #enter-btn::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: shimmerBtn 2s infinite;
+    }
+    #enter-btn:hover { transform: scale(1.1); background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); border-color: transparent; box-shadow: 0 15px 50px rgba(255, 152, 0, 0.9); }
+    .hide-welcome { opacity: 0; pointer-events: none; transform: scale(1.1); }
 
-    /* Navbar */
+    /* =====================================
+       SMART NAVBAR
+    ===================================== */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-
-      background: rgba(10, 10, 25, 0.6);
-      backdrop-filter: blur(20px);
-
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-      padding: 10px 40px;
-      display: flex;
-      justify-content: space-between;
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: var(--nav-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 15px 50px; display: flex; justify-content: space-between; align-items: center;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.3); transform-style: preserve-3d;
     }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo span.badge {
-      background: #ff9800;
-      padding: 6px 12px;
-      border-radius: 8px;
-      color: #000;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      font-size: 15px;
-    }
-
-    .nav-links a {
-      position: relative;
-      padding-bottom: 4px;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.2s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
+    nav.nav-hidden { transform: translateY(-120%); }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .logo span.badge { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); padding: 8px 18px; border-radius: 12px; color: #fff; font-weight: 900; letter-spacing: 2px; box-shadow: 0 5px 20px var(--accent-glow); transform: translateZ(20px);}
+    .nav-links { display: flex; gap: 35px; font-size: 15px; font-weight: 700; align-items: center; }
+    .nav-links a { position: relative; padding: 5px 0; color: var(--text-color); transition: color 0.3s; }
+    .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 0; height: 3px; background: var(--accent); border-radius: 2px; transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .nav-links a:hover::after { width: 100%; box-shadow: 0 0 10px var(--accent); }
+    .nav-links a:hover { color: var(--accent); }
+    
     .theme-toggle {
-      border: 1px solid var(--border-color);
-      background: transparent;
-      color: var(--text-color);
-      border-radius: 999px;
-      padding: 6px 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
+      border: 1px solid var(--glass-border-light); background: rgba(255, 255, 255, 0.08); color: var(--text-color);
+      border-radius: 25px; padding: 10px 22px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 900;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(15px);
     }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--bg-color); background: var(--accent); transform: translateZ(30px) scale(1.1); box-shadow: 0 10px 30px var(--accent-glow); }
+    .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-color); font-size: 2rem; cursor: pointer; }
 
-    .btn-primary {
-      position: relative;
-      overflow: hidden;
+    /* =====================================
+       MAIN LAYOUT & TYPOGRAPHY
+    ===================================== */
+    main { max-width: 1250px; margin: 0 auto; padding: 120px 20px 80px; position: relative; z-index: 1;}
+    section { margin-bottom: 140px; transform-style: preserve-3d; }
+    .section-title { font-size: 3.2rem; font-weight: 900; margin-bottom: 15px; display: inline-block; position: relative; letter-spacing: -1px; text-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+    .section-title::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 70px; height: 6px; background: linear-gradient(90deg, var(--accent), var(--accent-secondary)); border-radius: 4px; box-shadow: 0 0 15px var(--accent); }
+    .section-subtitle { font-size: 16px; color: var(--accent); font-weight: 900; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 12px; }
+
+    /* Fancy Buttons */
+    .btn-primary, .btn-ghost {
+      border-radius: 30px; padding: 15px 30px; font-size: 15px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 12px; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none; position: relative; overflow: hidden;
+      transform: translateZ(30px);
     }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); color: #fff; box-shadow: 0 10px 30px var(--accent-glow); }
+    .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: shimmerBtn 3s infinite; }
+    .btn-primary:hover { transform: translateZ(50px) scale(1.1); box-shadow: 0 20px 40px var(--accent-glow); }
+    
+    .btn-ghost { background: var(--glass-bg); color: var(--text-color); border: 2px solid var(--glass-border-light); backdrop-filter: blur(15px); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateZ(50px) scale(1.1); box-shadow: 0 15px 35px rgba(0,0,0,0.4); background: rgba(255,152,0,0.1); }
 
-    .btn-primary::after {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 60%);
-      top: -50%;
-      left: -50%;
-      transition: 0.5s;
-    }
-
-    .btn-primary:hover::after {
-      top: 0;
-      left: 0;
-    }
-
-    /* LIGHT MODE THEME */
-    html.light-mode {
-      --bg: #ffffff;
-      --bg-alt: #f4f4f4;
-      --text-color: #000000;
-      --border-color: #d1d1d1;
-      --accent: #ff9800;
-    }
-
-    /* Light Mode Navbar Fix */
-    < !-- html.light-mode nav {
-      background: rgba(255, 255, 255, 0.9) !important;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    html.light-mode .nav-links a {
-      color: #000 !important;
-    }
-
-    html.light-mode .nav-links a::after {
-      background: var(--accent);
-    }
-
-    html.light-mode .theme-toggle {
-      color: #000 !important;
-      border-color: #c1c1c1 !important;
-    }
-
-    -->body.light {
-      --bg-color: #ffffff;
-      --bg-alt: #f4f4f4;
-      --text-color: #000000;
-      --muted-text: #555;
-      --card-bg: #ffffff;
-      --border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    /* NAVBAR FIX */
-    body.light nav {
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    /* TEXT FIX */
-    body.light .nav-links a {
-      color: #000;
-    }
-
-    /* BUTTON FIX */
-    body.light .theme-toggle {
-      color: #000;
-      border-color: #ccc;
-    }
-
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px 60px;
-    }
-
-    section {
-      margin-bottom: 80px;
-    }
-
-    .section-title {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .section-subtitle {
-      font-size: 14px;
-      color: var(--muted-text);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-    }
-
-    /* Hero wrapper */
-    #home-wrapper {
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      background: radial-gradient(circle at top left, #2d1555, #05050b);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      margin-bottom: 70px;
-    }
-
-    #hero-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    #home {
-      position: relative;
-      z-index: 1;
-      min-height: 80vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 40px 50px;
-      color: #fdfdfd;
-    }
-
-    .hero-inner {
-      display: flex;
-      gap: 50px;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .hero-left {
-      flex: 1 1 260px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .profile-card {
-      background: rgba(10, 10, 31, 0.80);
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 20px 22px 18px;
-      width: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* =====================================
+       PREMIUM EXTREME 3D GLASSMORPHISM
+    ===================================== */
+    .tilt-card {
+      background: var(--glass-bg); border-radius: 28px;
+      border: 1px solid var(--glass-border); border-top: 1px solid var(--glass-border-light); border-left: 1px solid var(--glass-border-light);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255,255,255,0.05);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
       transform-style: preserve-3d;
-      transform: perspective(900px) rotateY(0deg);
-      transition: transform 0.4s ease, box-shadow 0.4s ease, translate 0.4s ease;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+    }
+    .tilt-card:hover { border-color: var(--accent); box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow); background: rgba(20,20,36,0.6); }
+    [data-theme="light"] .tilt-card:hover { background: rgba(255,255,255,0.9); }
+
+    .pop-out { transform: translateZ(40px); }
+    .pop-out-high { transform: translateZ(60px); }
+
+    /* =====================================
+       HERO ENTRY ANIMATION
+    ===================================== */
+    .hero-animate {
+      opacity: 0;
+      transform: perspective(1000px) translateY(80px) scale(0.9) rotateX(15deg);
+      transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .hero-animate.hero-visible {
+      opacity: 1;
+      transform: perspective(1000px) translateY(0) scale(1) rotateX(0deg);
     }
 
-    .profile-card:hover {
-      transform: perspective(900px) rotateY(-8deg) translateY(-6px);
-      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.9);
+    /* =====================================
+       HERO SECTION
+    ===================================== */
+    #home { position: relative; z-index: 1; min-height: 85vh; display: flex; align-items: center; padding: 40px 20px; margin-top: 20px;}
+    .hero-inner { display: flex; gap: 70px; flex-wrap: wrap; align-items: center; justify-content: space-between; width: 100%; transform-style: preserve-3d;}
+    
+    .hero-left { flex: 1 1 320px; display: flex; justify-content: center; perspective: 1200px; }
+    .profile-card { padding: 45px 35px; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .profile-img-wrap { position: relative; padding: 8px; border-radius: 50%; margin-bottom: 25px; display: inline-flex; z-index: 1; transform: translateZ(60px); }
+    .profile-img-wrap::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent), var(--accent-secondary), #00e5ff, var(--accent));
+      animation: spinBorder 3s linear infinite; z-index: -1;
     }
+    .profile-img-wrap img { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 6px solid var(--bg-alt); background: var(--bg-alt); display: block; }
+    .profile-name { font-size: 28px; font-weight: 900; margin-top: 10px; transform: translateZ(50px); text-shadow: 0 5px 15px rgba(0,0,0,0.4);}
+    .profile-role { font-size: 16px; color: var(--accent); margin-bottom: 25px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; transform: translateZ(40px);}
+    .profile-socials { display: flex; gap: 18px; transform: translateZ(60px); }
+    .profile-socials a { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-border-light); font-size: 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .profile-socials a:hover { background: var(--accent); color: #fff; transform: translateZ(30px) translateY(-8px) scale(1.15); box-shadow: 0 15px 30px var(--accent-glow); border-color: transparent;}
 
-    .profile-img-wrap {
-      border-radius: 999px;
-      padding: 4px;
-      background: conic-gradient(from 140deg, #ff9800, #ff3d71, #18ffff, #ff9800);
-      margin-bottom: 10px;
-    }
+    .hero-right { flex: 2 1 450px; transform-style: preserve-3d;}
+    .hero-greeting { font-size: 16px; letter-spacing: 5px; font-weight: 900; color: var(--accent); margin-bottom: 25px; display: inline-block; padding: 10px 25px; border-radius: 30px; background: rgba(255,152,0,0.15); border: 1px solid rgba(255,152,0,0.4); box-shadow: 0 10px 25px rgba(255,152,0,0.2); transform: translateZ(40px);}
+    .hero-title { font-size: 5rem; font-weight: 900; margin-bottom: 15px; line-height: 1.1; letter-spacing: -2px; text-shadow: 0 15px 30px rgba(0,0,0,0.4); transform: translateZ(60px);}
+    .hero-title span { background: linear-gradient(to right, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-typing { font-size: 2rem; font-weight: 800; color: var(--text-color); min-height: 45px; margin-bottom: 30px; transform: translateZ(50px);}
+    .hero-typing span { border-right: 4px solid var(--accent); padding-right: 8px; animation: blink 0.7s infinite; }
+    .hero-text { font-size: 1.25rem; line-height: 1.9; color: var(--muted-text); max-width: 650px; margin-bottom: 45px; font-weight: 600; transform: translateZ(30px);}
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 20px; transform: translateZ(50px);}
 
-    .profile-img-wrap img {
-      width: 200px;
-      height: 200px;
-      border-radius: 999px;
-      object-fit: cover;
-      display: block;
-    }
+    /* =====================================
+       CARDS & GRIDS (About/Exp)
+    ===================================== */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 50px; margin-top: 50px; }
+    .info-card { padding: 45px; }
+    .info-card p { font-size: 1.2rem; line-height: 1.8; color: var(--muted-text); margin-bottom: 15px; transform: translateZ(30px);}
+    .info-card h3 { font-size: 2.2rem; margin-bottom: 20px; color: var(--text-color); font-weight: 900; transform: translateZ(40px);}
+    .info-card h4 { font-size: 1.6rem; transform: translateZ(40px);}
 
-    .profile-name {
-      font-size: 20px;
-      font-weight: 600;
-      margin-top: 6px;
-    }
-
-    .profile-role {
-      font-size: 13px;
-      color: #c4c4dd;
-      margin-bottom: 10px;
-    }
-
-    .profile-tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      margin: 8px 0 14px;
-    }
-
-    .profile-tags span {
-      font-size: 11px;
-      border-radius: 999px;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .profile-socials {
-      display: flex;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .profile-socials a {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      font-size: 14px;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .profile-socials a:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .hero-right {
-      flex: 2 1 340px;
-    }
-
-    .hero-greeting {
-      font-size: 15px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #c1c1ec;
-    }
-
-    .hero-title {
-      font-size: 40px;
-      font-weight: 700;
-      margin: 10px 0 4px;
-    }
-
-    .hero-title span {
-      color: var(--accent);
-    }
-
-    .hero-typing {
-      font-size: 20px;
-      font-weight: 500;
-      color: #f5f5ff;
-      min-height: 28px;
-    }
-
-    .hero-typing span {
-      border-right: 2px solid #f5f5ff;
-      padding-right: 4px;
-    }
-
-    .hero-text {
-      margin-top: 18px;
-      font-size: 15px;
-      line-height: 1.6;
-      max-width: 520px;
-      color: #d1d1e6;
-    }
-
-    .hero-buttons {
-      margin-top: 26px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn-primary,
-    .btn-ghost {
-      border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #111;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #f5f5ff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 18px;
-      padding: 20px 22px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-
-    .card p {
-      margin: 0;
-      font-size: 14px;
-      color: var(--muted-text);
-    }
-
-    .pill {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      margin: 4px 4px 0 0;
-    }
-
-    /* ==== Skills Section Upgrade ==== */
-
-    .skills-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .skill-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
-      padding: 25px;
-      border-radius: 20px;
-      backdrop-filter: blur(20px);
-      transition: 0.25s ease;
-      position: relative;
-      animation: fadeUp 0.8s ease;
-    }
-
-    /* Floating hover effect */
-    .skill-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      border-color: var(--accent);
-    }
-
-    /* Section headings inside cards */
-    .skill-card h3 {
-      margin-bottom: 18px;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Group styling */
-    .skills-group {
-      margin-bottom: 20px;
-    }
-
-    .skills-group-title {
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: var(--accent);
-    }
-
-    /* Skill Pills */
+    /* =====================================
+       SKILLS SECTION
+    ===================================== */
+    .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 50px; margin-top: 60px; }
+    .skill-card { padding: 45px; }
+    .skill-card h3 { font-size: 2rem; margin-bottom: 35px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; transform: translateZ(40px);}
+    .skill-card h3 i { color: var(--accent); font-size: 2.5rem; text-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+    .skills-group { margin-bottom: 30px; transform: translateZ(30px); }
+    .skills-group-title { font-size: 1.2rem; font-weight: 900; color: var(--text-color); margin-bottom: 18px; letter-spacing: 2px; text-transform: uppercase;}
+    
     .skill-pill {
-      display: inline-block;
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-color);
-      border-radius: 30px;
-      margin: 4px 8px 4px 0;
-      font-size: 13px;
-      transition: 0.25s ease;
-      cursor: default;
-      transition: 0.3s ease;
+      display: inline-block; padding: 12px 22px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border-light); border-radius: 30px; margin: 0 12px 15px 0;
+      font-size: 1.05rem; font-weight: 800; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
+    }
+    .skill-pill:hover { 
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); color: #fff; border-color: transparent;
+      transform: translateZ(20px) translateY(-6px) scale(1.15) rotate(3deg); box-shadow: 0 15px 30px var(--accent-glow);
     }
 
-    /* Hover animation */
-    .skill-pill:hover {
-      background: var(--accent);
-      color: #000;
-      transform: scale(1.12);
-      box-shadow: 0 0 12px var(--accent);
-      background: var(--accent);
-      color: #000;
-      transform: scale(1.15) rotate(2deg);
-      box-shadow: 0 0 12px var(--accent);
-    }
-
-    /* Light Mode Fix */
-    html.light-mode .skill-pill {
-      background: rgba(0, 0, 0, 0.06);
-      border-color: #bbbbbb;
-    }
-
-    html.light-mode .skill-pill:hover {
-      background: var(--accent);
-      color: #000;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Reveal animation */
-    .reveal {
-      opacity: 0;
-      transform: translateY(60px);
-      transition: 1s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-
-    .skills-group-title {
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
-
-    .skills-items span {
-      display: inline-block;
-      font-size: 13px;
-      margin: 2px 6px 2px 0;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.045);
-      border: 1px solid var(--border-color);
-    }
-
-    .contact-info p {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-
-    /* ==== PROJECTS SECTION ==== */
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    /* Project Card */
-    .project-card {
-      position: relative;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 20px;
-      padding: 25px;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-
-    .project-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      padding: 1px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #ff9800, #ff3d71, #00e5ff);
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-    }
-
-    /* Hover effect */
-    .project-card:hover {
-      transform: translateY(-10px) scale(1.03);
-      border-color: var(--accent);
-      box-shadow: 0 0 25px rgba(255, 152, 0, 0.4);
-    }
-
-    /* Header Icon */
-    .project-header {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .project-icon {
-      font-size: 40px;
-      color: var(--accent);
-    }
-
-    /* Title */
-    .project-card h3 {
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-
-    /* Description */
-    .project-card p {
-      font-size: 14px;
-      opacity: 0.8;
-      margin-bottom: 15px;
-    }
-
-    /* Tech Tags */
-    .project-tags span {
-      display: inline-block;
-      padding: 5px 12px;
-      margin: 3px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border-color);
-      border-radius: 30px;
-      font-size: 12px;
-      transition: 0.25s ease;
-    }
-
-    .project-tags span:hover {
-      background: var(--accent);
-      color: #000;
-      transform: scale(1.08);
-      box-shadow: 0 0 12px var(--accent);
-    }
-
-    /* GitHub Button */
+    /* =====================================
+       PROJECTS SECTION
+    ===================================== */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 50px; margin-top: 60px; }
+    .project-card { padding: 45px; display: flex; flex-direction: column; height: 100%; }
+    
+    .project-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; transform: translateZ(50px); }
+    .project-icon { font-size: 3.5rem; color: var(--accent); text-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+    
+    .project-card h3 { font-size: 1.8rem; margin-bottom: 18px; font-weight: 900; transform: translateZ(40px); }
+    .project-card p { font-size: 1.1rem; color: var(--muted-text); margin-bottom: 35px; line-height: 1.8; flex-grow: 1; transform: translateZ(30px); }
+    
+    .project-tags { margin-bottom: 35px; display: flex; flex-wrap: wrap; gap: 12px; transform: translateZ(40px); }
+    .project-tags span { padding: 8px 16px; background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border-light); border-radius: 10px; font-size: 0.9rem; font-weight: 900; color: var(--text-color); transition: all 0.3s;}
+    .project-tags span:hover { background: var(--accent); color: #000; border-color: transparent; box-shadow: 0 5px 15px var(--accent-glow);}
+    
+    .project-links { display: flex; gap: 20px; flex-wrap: wrap; transform: translateZ(50px); }
     .project-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 12px;
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 14px;
-      transition: 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      z-index: 5;
+      flex: 1; text-align: center; padding: 15px; border-radius: 15px; border: 2px solid var(--glass-border-light);
+      font-size: 1rem; font-weight: 900; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: rgba(255,255,255,0.05); min-width: 120px;
     }
+    .project-btn:hover { background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); color: #fff; border-color: transparent; transform: translateZ(20px) translateY(-5px) scale(1.1); box-shadow: 0 15px 30px var(--accent-glow); }
 
-    /* HOVER EFFECT */
-    .project-btn:hover {
-      background: var(--accent);
-      color: #000;
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
-    }
-
-    /* Light Mode Fix */
-    html.light-mode .project-card {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    html.light-mode .project-tags span {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    /* Tilt effect needs overflow hidden */
-    .project-card[data-tilt] {
-      transform-style: preserve-3d;
-    }
-
-
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 12px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-color);
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-
-    .contact-form input:focus,
-    .contact-form textarea:focus {
-      outline: none;
-      border-color: #ff9800;
-    }
-
-    footer {
-      text-align: center;
-      padding: 16px 10px 26px;
-      font-size: 13px;
-      color: var(--muted-text);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        padding: 10px 18px;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .nav-links {
-        gap: 12px;
-        font-size: 13px;
-      }
-
-      #home {
-        padding: 30px 20px 40px;
-      }
-
-      .hero-title {
-        font-size: 30px;
-      }
-
-      .hero-title {
-        animation: fadeUp 1s ease forwards;
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .hero-inner {
-        gap: 30px;
-      }
-
-      .profile-card {
-        width: 230px;
-      }
-    }
-
-    /* ======================================
-   CERTIFICATES – FINAL REPLACEMENT
-====================================== */
-
-    #certificates {
-      padding: 60px 0;
-      position: relative;
-    }
-
-    /* ---------- Badge Certificates ---------- */
-
-    .cert-badge-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 22px;
-      margin-top: 30px;
-      text-align: center;
-    }
-
+    /* =====================================
+       CERTIFICATES SECTION 
+    ===================================== */
+    .cert-badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-top: 60px; }
     .cert-badge {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 14px 10px;
-      cursor: pointer;
-      /* opacity: 0; */
-      transform: scale(0.88) translateY(20px);
-      transition:
-        opacity 0.6s ease,
-        transform 0.6s ease,
-        box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      transform: translateY(40px);
-      transition: 0.6s ease;
+      padding: 35px 20px; text-align: center; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
-
-    .cert-badge::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 1px;
-      background: linear-gradient(135deg, #ff9800, #ff3d71, #00e5ff);
-
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
+    .cert-badge img { 
+      width: 100%; height: 130px; object-fit: contain; margin-bottom: 25px; 
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); transform: translateZ(60px); 
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s; 
     }
-
-    .cert-badge:active {
-      transform: scale(0.95);
-    }
-
-    .cert-badge.show {
-      opacity: 1;
-      transform: translateY(40px);
-      transition: 0.6s ease;
-
-      .cert-badge:hover {
-        transform: translateY(-8px) scale(1.08);
-        box-shadow:
-          0 10px 25px rgba(0, 0, 0, 0.3),
-          0 0 20px rgba(255, 152, 0, 0.4);
-      }
-    }
-
-    .cert-badge img {
-      width: 100%;
-      max-height: 120px;
-      object-fit: contain;
-      border-radius: 10px;
-    }
-
-    .cert-badge p {
-      margin-top: 8px;
-      font-size: 13px;
-      opacity: 0.85;
-    }
-
-    .cert-badge:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 18px rgba(255, 152, 0, 0.45);
-    }
-
-    /* ---------- LeetCode Certificate Cards ---------- */
-
-    .cert-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 26px;
-      margin-top: 45px;
-    }
-
-    .cert-card {
-      position: relative;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 20px;
-      padding: 24px 22px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(12px);
-      /* opacity: 0; */
-      transform: translateY(40px) scale(0.96);
-      transition:
-        opacity 0.7s ease,
-        transform 0.7s ease,
-        box-shadow 0.35s ease;
-    }
-
-    .cert-card.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .cert-card img {
-      width: 110px;
-      margin-bottom: 14px;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
-    }
-
-    .cert-card h3 {
-      font-size: 1.1rem;
-      margin: 10px 0 4px;
-    }
-
-    .cert-card p {
-      font-size: 0.9rem;
-      opacity: 0.85;
-      line-height: 1.5;
-    }
-
-    .cert-link {
-      display: inline-block;
-      margin-top: 14px;
-      font-weight: 500;
-      color: var(--accent);
-    }
-
-    .cert-link:hover {
-      text-decoration: underline;
-    }
-
-    /* ---------- Hover Glow ---------- */
-
-    .cert-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      background: radial-gradient(600px circle at var(--x) var(--y),
-          rgba(255, 190, 90, 0.18),
-          transparent 40%);
-      opacity: 0;
-      transition: opacity 0.35s ease;
-      pointer-events: none;
-    }
-
-    .cert-card:hover::before {
-      opacity: 1;
-    }
-
-    .cert-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow:
-        0 22px 45px rgba(0, 0, 0, 0.35),
-        0 0 28px rgba(255, 190, 90, 0.25);
-    }
-
-    /* ---------- Headings animation ---------- */
-
-    #certificates h3 {
-      opacity: 0;
-      transform: translateX(-30px);
-      transition: 0.6s ease;
-    }
-
-    #certificates h3.show {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
+    .cert-badge p { font-size: 1.15rem; font-weight: 900; color: var(--text-color); transform: translateZ(30px); }
+    .cert-badge:hover img { transform: translateZ(90px) scale(1.25); filter: drop-shadow(0 25px 35px var(--accent-glow));}
+    
     #cert-viewer {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px);
+      display: none; align-items: center; justify-content: center; z-index: 10000;
+      opacity: 0; transition: opacity 0.4s ease; perspective: 1500px;
     }
-
-    #cert-full,
-    #cert-pdf {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 12px;
+    #cert-viewer.active { opacity: 1; }
+    
+    #cert-full, #cert-pdf { 
+      max-width: 90%; max-height: 85vh; border-radius: 15px; 
+      box-shadow: 0 30px 80px rgba(0,0,0,1), 0 0 40px var(--accent-glow); 
+      border: 4px solid var(--accent); 
+      transform: translateZ(-500px) scale(0.5) rotateY(20deg); 
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     }
+    #cert-viewer.active #cert-full, #cert-viewer.active #cert-pdf { transform: translateZ(0) scale(1) rotateY(0deg); }
+    
+    .close-viewer { position: absolute; top: 40px; right: 50px; color: white; font-size: 3.5rem; cursor: pointer; transition: all 0.3s; text-shadow: 0 0 15px rgba(0,0,0,0.8);}
+    .close-viewer:hover { color: var(--accent-secondary); transform: scale(1.2) rotate(90deg); text-shadow: 0 0 20px var(--accent-glow);}
 
-    #cert-pdf {
-      width: 80%;
-      height: 80%;
-      background: #000;
+    /* =====================================
+       CONTACT SECTION
+    ===================================== */
+    .contact-info p { margin-bottom: 25px; font-size: 1.25rem; display: flex; align-items: center; gap: 18px; transform: translateZ(30px);}
+    .contact-info a { color: var(--accent); font-weight: 800; transition: all 0.3s; position: relative; }
+    .contact-info a::after { content: ''; position: absolute; left:0; bottom:-4px; width:0; height:3px; background:var(--accent-secondary); transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .contact-info a:hover::after { width:100%; box-shadow: 0 0 10px var(--accent-secondary);}
+    
+    .contact-form { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; transform: translateZ(40px);}
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 20px 25px; background: rgba(0,0,0,0.3); border: 2px solid var(--glass-border-light);
+      border-radius: 18px; color: var(--text-color); font-size: 1.15rem; font-family: inherit; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.08); transform: translateZ(20px) translateY(-5px); box-shadow: 0 15px 30px rgba(255, 152, 0, 0.25); }
+    
+    footer { text-align: center; padding: 50px 20px; font-size: 18px; font-weight:800; color: var(--muted-text); border-top: 1px solid var(--glass-border); margin-top: 100px; backdrop-filter: blur(15px); }
+
+    /* =====================================
+       FAST TWO-WAY SCROLL ANIMATIONS
+    ===================================== */
+    .reveal, .stagger-item {
+      opacity: 0;
+      transform: perspective(1000px) translateY(50px) scale(0.9) rotateX(10deg);
+      transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: opacity, transform;
+    }
+    .reveal.visible, .stagger-container.visible .stagger-item.visible {
+      opacity: 1;
+      transform: perspective(1000px) translateY(0) scale(1) rotateX(0deg);
+    }
+    
+    /* Lightning Fast Stagger Delays */
+    .stagger-item:nth-child(1) { transition-delay: 0.05s; } .stagger-item:nth-child(2) { transition-delay: 0.1s; }
+    .stagger-item:nth-child(3) { transition-delay: 0.15s; } .stagger-item:nth-child(4) { transition-delay: 0.2s; }
+    .stagger-item:nth-child(5) { transition-delay: 0.25s; } .stagger-item:nth-child(6) { transition-delay: 0.3s; }
+    .stagger-item:nth-child(7) { transition-delay: 0.35s; } .stagger-item:nth-child(8) { transition-delay: 0.4s; }
+    .stagger-item:nth-child(9) { transition-delay: 0.45s; } .stagger-item:nth-child(10) { transition-delay: 0.5s; }
+    .stagger-item:nth-child(11) { transition-delay: 0.55s; } .stagger-item:nth-child(12) { transition-delay: 0.6s; }
+    .stagger-item:nth-child(13) { transition-delay: 0.65s; }
+
+    /* =====================================
+       MOBILE RESPONSIVENESS
+    ===================================== */
+    @media (max-width: 768px) {
+      nav { padding: 15px 25px; }
+      .nav-links {
+        position: absolute; top: 100%; left: 0; width: 100%;
+        background: var(--nav-bg); flex-direction: column; padding: 30px;
+        border-bottom: 1px solid var(--glass-border); box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+      .mobile-menu-btn { display: block; font-size: 2.2rem; }
+      
+      .hero-title { font-size: 3.5rem; }
+      .welcome-content h1 { font-size: 3rem; }
+      .hero-inner { flex-direction: column-reverse; text-align: center; }
+      .hero-buttons { justify-content: center; }
+      .profile-card { max-width: 320px; margin: 0 auto;}
+      .projects-grid { grid-template-columns: 1fr; }
+      .cert-badge-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .cursor-glow { display: none; }
+    }
+    @media (max-width: 480px) {
+      .cert-badge-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; width: 100%; }
+      .hero-buttons .btn-primary, .hero-buttons .btn-ghost { width: 100%; justify-content: center; }
     }
   </style>
 
 </head>
 
-<body>
-  <div id="progress-bar"></div>
-  <div class="mouse-glow"></div>
-  <!-- WELCOME SCREEN -->
-  <div id="welcome-screen">
-    <video autoplay muted loop id="welcome-video">
-      <source src="175446-853577055.mp4" type="video/mp4">
-    </video>
-
-    <div class="welcome-content">
-      <h1>Welcome to Profile</h1>
-      <p>Abhishek Choudhary • AI Developer</p>
-      <button id="enter-btn">Enter</button>
-    </div>
+<body class="locked">
+  <div id="canvas-container">
+    <canvas id="particle-canvas"></canvas>
   </div>
-  <!-- Loading Screen -->
+  <div class="bg-gradient-overlay"></div>
+  
+  <div class="cursor-glow" id="cursor-glow"></div>
+  <div id="progress-bar"></div>
+  
   <div id="loader">
     <div class="spinner"></div>
   </div>
 
-  <!-- Navbar -->
-  <nav>
-    <div class="nav-left">
-      <div class="logo">
-        <span class="badge">AC</span>
-      </div>
+  <div id="welcome-screen">
+    <video autoplay muted loop playsinline id="welcome-video">
+      <source src="175446-853577055.mp4" type="video/mp4">
+    </video>
+    <div class="welcome-overlay"></div>
+    <div class="welcome-content">
+      <h1>Welcome to Portfolio</h1>
+      <p>Abhishek Choudhary • Data Scientist</p>
+      <button id="enter-btn">
+        <span>Initialize 3D Experience</span>
+        <i class="fa-solid fa-power-off" style="color: #fff; font-size: 1.4rem;"></i>
+      </button>
     </div>
-    <div class="nav-links">
+  </div>
+
+  <nav id="navbar" style="transform:translateY(-150px);">
+    <div class="nav-left">
+      <div class="logo"><span class="badge">AC</span></div>
+    </div>
+    <div class="nav-links" id="navLinks">
       <a href="#home-wrapper">Home</a>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
-      <a href="#certificates">Certificates</a>
       <a href="#projects">Projects</a>
+      <a href="#certificates">Certificates</a>
       <a href="#contact">Contact</a>
+      <button id="themeToggle" class="theme-toggle">
+        <i class="fa-regular fa-sun"></i>
+        <span>Light</span>
+      </button>
     </div>
-    <button id="themeToggle" class="theme-toggle">
-      <i class="fa-regular fa-moon"></i>
-      <span>Dark</span>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fa-solid fa-bars"></i>
     </button>
   </nav>
 
-  <main>
-    <!-- HERO + Animated Background -->
-    <div id="home-wrapper" class="reveal">
-      <canvas id="hero-canvas"></canvas>
+  <main id="main-content">
+    <div id="home-wrapper" class="tilt-card hero-animate" data-tilt data-tilt-max="3" data-tilt-glare="true" data-tilt-max-glare="0.15">
       <section id="home">
         <div class="hero-inner">
-          <!-- Left 3D Profile Card -->
-          <div class="hero-left">
-            <div class="profile-card">
-              <div class="profile-img-wrap">
-                <!-- Make sure profile.jpg exists next to index.html -->
-                <img src="Gemini_Generated_Image_el57tkel57tkel57.png" alt="Abhishek Choudhary" loading="lazy" />
-              </div>
-              <div class="profile-name">Abhishek Choudhary</div>
-              <div class="profile-role">Data Scientist</div>
-              <div class="profile-tags">
-                <span>Python</span>
-                <span>Machine Learning</span>
-                <span>SQL</span>
-              </div>
-              <div class="profile-socials">
-                <a href="https://github.com/abhishekchoudhary88" title="GitHub" target="_blank">
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/abhishek-choudhary-65012a303/" title="LinkedIn" target="_blank">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://www.instagram.com/__abhiichoudhary?igsh=ZzF5dTh1cHkyZHgy" title="Instagram"
-                  target="_blank">
-                  <i class="fab fa-instagram"></i>
-                </a>
-              </div>
+          <div class="hero-right">
+            <div class="hero-greeting pop-out"><i class="fa-solid fa-microchip"></i> AI • ML • DATA SCIENCE</div>
+            <div class="hero-title pop-out-high">
+              Hi, I'm <span>Abhishek Choudhary</span>
+            </div>
+            <div class="hero-typing pop-out">
+              <span id="typingText"></span>
+            </div>
+            <p class="hero-text pop-out">
+              I build intelligent AI-powered applications using Machine Learning, Deep Learning, and NLP.
+              Experienced in developing end-to-end solutions — from data preprocessing to model deployment.
+            </p>
+            <div class="hero-buttons pop-out">
+              <a href="#projects" class="btn-primary">
+                <i class="fa-solid fa-rocket"></i> View Projects
+              </a>
+              <a href="Abhishek_Choudhary_Resume(Photo).pdf" target="_blank" class="btn-ghost">
+                <i class="fa-regular fa-eye"></i> View Resume
+              </a>
+              <a href="Abhishek_Choudhary_Resume(Photo).pdf" download class="btn-ghost">
+                <i class="fa-solid fa-download"></i> Download Resume
+              </a>
             </div>
           </div>
 
-          <!-- Right Text Side -->
-          <div class="hero-right">
-            <div class="hero-greeting">AI • MACHINE LEARNING • NLP • DATA SCIENCE</div>
-            <div class="hero-title">
-              Hi, I'm <span>Abhishek Choudhary</span>
+          <div class="hero-left">
+            <div class="profile-card tilt-card pop-out-high" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.5" data-tilt-scale="1.1">
+              <div class="profile-img-wrap">
+                <img src="Gemini_Generated_Image_el57tkel57tkel57.png" alt="Abhishek Choudhary" loading="lazy" onerror="this.src='https://via.placeholder.com/200x200.png?text=Profile'"/>
+              </div>
+              <div class="profile-name">Abhishek Choudhary</div>
+              <div class="profile-role">Data Scientist</div>
+              <div class="profile-socials">
+                <a href="https://github.com/abhishekchoudhary88" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/abhishek-choudhary-65012a303/" title="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/__abhiichoudhary?igsh=ZzF5dTh1cHkyZHgy" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+              </div>
             </div>
-            <div class="hero-typing">
-              <span id="typingText"></span>
-            </div>
-            <p class="hero-text">
-              I build intelligent AI-powered applications using Machine Learning, Deep Learning, and NLP.
-              Experienced in developing end-to-end solutions — from data preprocessing to model deployment —
-              solving real-world problems with data-driven approaches.
-            </p>
-            <div class="hero-buttons">
-              <button class="btn-primary"
-                onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
-                <i class="fa-solid fa-diagram-project"></i>
-                View Projects
-              </button>
-
-              <!-- View Resume -->
-              <a href="updated_Abhishek_Choudhary_resume.pdf" target="_blank" class="btn-ghost">
-                <i class="fa-regular fa-eye"></i>
-                View Resume
-              </a>
-
-              <!-- Download Resume -->
-              <a href="updated_Abhishek_Choudhary_resume.pdf" download class="btn-ghost">
-                <i class="fa-regular fa-file-lines"></i>
-                Download Resume
-              </a>
-            </div>
-
           </div>
         </div>
       </section>
     </div>
 
-    <!-- About -->
-    <section id="about" class="reveal">
-      <div class="section-subtitle">ABOUT ME </div>
-      <div class="section-title"></div>
-      <div class="card">
-        <p>
-          I'm a data science enthusiast currently pursuing a <strong> Bachelor of Computer Applications (BCA) </strong>,
-          actively building strong expertise in Python, Machine Learning, SQL, data analysis, and data visualization
-          tools such as Power BI. I am passionate about transforming raw data into actionable insights and developing
-          practical, scalable models that can be effectively deployed in real-world applications.
+    <div class="grid-2 reveal stagger-container" style="margin-bottom: 140px;">
+      <section id="about" class="stagger-item info-card tilt-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3" data-tilt-scale="1.05" style="margin-bottom:0;">
+        <div class="section-subtitle">ABOUT ME</div>
+        <h3 class="pop-out">My Journey</h3>
+        <p class="pop-out">
+          I'm a data science enthusiast pursuing a <strong>Bachelor of Computer Applications (BCA)</strong>,
+          actively building expertise in Python, Machine Learning, SQL, and Data Visualization tools like Power BI.
         </p>
-        <p style="margin-top: 12px;">
-          My goal is to grow into a professional Data Scientist, working on
-          challenging projects that combine analytical thinking, creativity,
-          and impactful outcomes.
+        <p class="pop-out">
+          My goal is to grow into a professional Data Scientist, solving real-world challenges through data-driven innovation.
         </p>
-      </div>
-    </section>
-    <section id="experience" class="reveal">
-      <div class="section-subtitle">EXPERIENCE</div>
-      <div class="section-title">Internship</div>
+      </section>
+      
+      <section id="experience" class="stagger-item info-card tilt-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.3" data-tilt-scale="1.05" style="margin-bottom:0;">
+        <div class="section-subtitle">EXPERIENCE</div>
+        <h3 class="pop-out">Internship</h3>
+        <h4 class="pop-out" style="font-size: 1.7rem; margin-bottom: 15px;">Data Science Intern</h4>
+        <p class="pop-out" style="color: var(--accent); font-weight: 900; margin-bottom: 20px; letter-spacing: 2px;"><i class="fa-solid fa-briefcase"></i> WE RNS IT Solutions Pvt. Ltd.</p>
+        <p class="pop-out">
+          Completed a 3-month internship (March 2026 - June 2026) focusing on data collection, cleaning, EDA, predictive modeling, and business intelligence.
+        </p>
+      </section>
+    </div>
 
-      <div class="card">
-        <h3>Data Science Intern</h3>
-        <p><strong>TIPS-G, Jaipur</strong></p>
-        <p>
-          Worked on real-world data science projects involving data analysis, machine learning,
-          and model deployment. Gained hands-on experience in Python, SQL, and visualization tools.
-        </p>
-      </div>
-    </section>
-    <!-- Skills -->
-    <section id="skills" class="reveal">
+    <section id="skills" class="reveal stagger-container">
       <div class="section-subtitle">SKILLS</div>
-      <div class="section-title">Technical & Soft Skills</div>
-
+      <div class="section-title">Technical Expertise</div>
       <div class="skills-container">
-
-        <!-- TECHNICAL SKILLS CARD -->
-        <div class="skill-card">
-          <h3><i class="fa-solid fa-microchip"></i> Technical Skills</h3>
-
+        
+        <div class="skill-card stagger-item tilt-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.25">
+          <h3><i class="fa-solid fa-microchip pop-out"></i> Technical Skills</h3>
           <div class="skills-group">
             <div class="skills-group-title">Programming Languages</div>
-            <div class="skills-items">
-              <span class="skill-pill">Python</span>
-              <span class="skill-pill">SQL</span>
-            </div>
+            <div class="pop-out"><span class="skill-pill">Python</span><span class="skill-pill">SQL</span></div>
           </div>
-
           <div class="skills-group">
             <div class="skills-group-title">Machine Learning</div>
-            <div class="skills-items">
-              <span class="skill-pill">Regression</span>
-              <span class="skill-pill">Classification</span>
-              <span class="skill-pill">Clustering</span>
-              <span class="skill-pill">Feature Engineering</span>
-              <span class="skill-pill">Model Evaluation</span>
-              <span class="skill-pill">Hyperparameter Tuning</span>
+            <div class="pop-out">
+              <span class="skill-pill">Regression</span><span class="skill-pill">Classification</span>
+              <span class="skill-pill">Clustering</span><span class="skill-pill">Feature Engineering</span>
             </div>
           </div>
-
           <div class="skills-group">
-            <div class="skills-group-title">Deep Learning</div>
-            <div class="skills-items">
-              <span class="skill-pill">Neural Networks</span>
-              <span class="skill-pill">CNN</span>
-              <span class="skill-pill">RNN</span>
-              <span class="skill-pill">LSTM</span>
-              <span class="skill-pill">ANN</span>
-            </div>
-          </div>
-
-          <div class="skills-group">
-            <div class="skills-group-title">Natural Language Processing</div>
-            <div class="skills-items">
-              <span class="skill-pill">Text Preprocessing</span>
-              <span class="skill-pill">Tokenization</span>
-              <span class="skill-pill">TF-IDF</span>
-              <span class="skill-pill">Word Embeddings</span>
-              <span class="skill-pill">Sentiment Analysis</span>
-            </div>
-          </div>
-
-          <div class="skills-group">
-            <div class="skills-group-title">Transformers & LLMs</div>
-            <div class="skills-items">
-              <span class="skill-pill">Transformers</span>
-              <span class="skill-pill">BERT</span>
-              <span class="skill-pill">GPT</span>
-              <span class="skill-pill">Hugging Face</span>
-            </div>
-          </div>
-
-          <div class="skills-group">
-            <div class="skills-group-title">Data Analysis</div>
-            <div class="skills-items">
-              <span class="skill-pill">EDA</span>
-              <span class="skill-pill">Data Cleaning</span>
-              <span class="skill-pill">Statistical Analysis</span>
-              <span class="skill-pill">Data Visualization</span>
+            <div class="skills-group-title">Deep Learning & NLP</div>
+            <div class="pop-out">
+              <span class="skill-pill">Neural Networks</span><span class="skill-pill">CNN/RNN</span>
+              <span class="skill-pill">NLP</span><span class="skill-pill">Transformers</span>
             </div>
           </div>
         </div>
 
-        <!-- TOOLS + SOFT SKILLS CARD -->
-        <div class="skill-card">
-          <h3><i class="fa-solid fa-toolbox"></i> Tools & Soft Skills</h3>
-
+        <div class="skill-card stagger-item tilt-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.25">
+          <h3><i class="fa-solid fa-toolbox pop-out"></i> Tools & Frameworks</h3>
           <div class="skills-group">
-            <div class="skills-group-title">Libraries & Frameworks</div>
-            <div class="skills-items">
-              <span class="skill-pill">NumPy</span>
-              <span class="skill-pill">Pandas</span>
-              <span class="skill-pill">Matplotlib</span>
-              <span class="skill-pill">Seaborn</span>
-              <span class="skill-pill">Scikit-Learn</span>
-              <span class="skill-pill">TensorFlow</span>
-              <span class="skill-pill">Keras</span>
-              <span class="skill-pill">PyTorch</span>
+            <div class="skills-group-title">Libraries</div>
+            <div class="pop-out">
+              <span class="skill-pill">NumPy</span><span class="skill-pill">Pandas</span>
+              <span class="skill-pill">Scikit-Learn</span><span class="skill-pill">TensorFlow</span>
             </div>
           </div>
-
           <div class="skills-group">
-            <div class="skills-group-title">Visualization & Tools</div>
-            <div class="skills-items">
-              <span class="skill-pill">Power BI</span>
-              <span class="skill-pill">Tableau</span>
-              <span class="skill-pill">Jupyter Notebook</span>
-              <span class="skill-pill">Excel</span>
-              <span class="skill-pill">Git</span>
-              <span class="skill-pill">GitHub</span>
-              <span class="skill-pill">Streamlit</span>
+            <div class="skills-group-title">Visualization & BI</div>
+            <div class="pop-out">
+              <span class="skill-pill">Power BI</span><span class="skill-pill">Tableau</span>
+              <span class="skill-pill">Matplotlib</span><span class="skill-pill">Seaborn</span>
             </div>
           </div>
-
           <div class="skills-group">
-            <div class="skills-group-title">Soft Skills</div>
-            <div class="skills-items">
-              <span class="skill-pill">Analytical Thinking</span>
-              <span class="skill-pill">Problem-Solving</span>
-              <span class="skill-pill">Critical Reasoning</span>
-              <span class="skill-pill">Attention to Detail</span>
-              <span class="skill-pill">Self-Learning</span>
-              <span class="skill-pill">Time Management</span>
-              <span class="skill-pill">Team Collaboration</span>
-              <span class="skill-pill">Communication Skills</span>
+            <div class="skills-group-title">Soft Skills & Tools</div>
+            <div class="pop-out">
+              <span class="skill-pill">Analytical Thinking</span><span class="skill-pill">Git/GitHub</span>
+              <span class="skill-pill">Streamlit</span><span class="skill-pill">Problem Solving</span>
             </div>
           </div>
         </div>
-
+        
       </div>
     </section>
-    <section id="certificates" class="reveal">
-      <div class="section-subtitle">CERTIFICATES</div>
-      <div class="section-title">Achievements & Learning</div>
 
-      <!-- BASIC / IMAGE CERTIFICATES -->
-      <h3 style="margin-top:30px;">Professional Certificates</h3>
-
-      <div class="cert-badge-grid">
-        <div class="cert-badge" onclick="openCert('python_basic_certificate.png')"> <img
-            src="python_basic_certificate.png" alt="Python Basic">
-          <p>Python (Basic)</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('sql_basic_certificate.png')">
-          <img src="sql_basic_certificate.png" alt="SQL Basic">
-          <p>SQL (Basic)</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('sql_intermediate_page1.png')">
-          <img src="SQL(Intermediate).png" alt="SQL Intermediate">
-          <p>SQL (Intermediate)</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('sql_advanced_certificate.png')">
-          <img src="sql_advanced_certificate.png" alt="SQL Advanced">
-          <p>SQL (Advanced)</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Data_scinece_certificate_(deloit).png')">
-          <img src="Data_scinece_certificate_(deloit).png" alt="Problem Solving Certificate">
-          <p>Data Science British Airways</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Deloite_(Data Analytics).png')">
-          <img src="Deloite_(Data Analytics).png" alt="Data Analytics">
-          <p>Deloitte – Data Analytics</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Abhi(eda).png')">
-          <img src="Abhi(eda).png" alt="Data Analytics">
-          <p>IBM - EDA</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Coursera_ML_With_Python _(Certificate).png')">
-          <img src="Coursera_ML_With_Python_(Certificate).png" alt="Data Analytics">
-          <p>IBM - ML</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Coursera_AI(Certificate).png')">
-          <img src="Coursera_AI(Certificate).png" alt="Data Analytics">
-          <p>IBM - AI</p>
-        </div>
-        <div class="cert-badge" onclick="openCert('Coursera_google_(Data Analytics).png')">
-          <img src="Coursera_google_(Data Analytics).png" alt="Data Analytics">
-          <p>Google - Data Analytics</p>
-        </div>
-      </div>
-      <!-- LEETCODE CERTIFICATES -->
-      <!-- <h3 style="margin-top:50px;">LeetCode Certifications</h3>
-
-            <div class="cert-container">
-                <div class="cert-card">
-                    <img src="top150.png" alt="Top Interview 150">
-                    <h3>Top Interview 150</h3>
-                    <p>LeetCode</p>
-                    <p>
-                        Completed 150 curated interview problems focused on
-                        data structures and algorithms.
-                    </p>
-                    <a href="https://leetcode.com/u/Abhishek_choudhary_88/" target="_blank" class="cert-link">
-                        View Profile
-                    </a>
-                </div>
-
-                <div class="cert-card">
-                    <img src="top100.png" alt="Top 100 Liked">
-                    <h3>Top 100 Liked</h3>
-                    <p>LeetCode</p>
-                    <p>
-                        Solved the most liked LeetCode problems to master
-                        core problem-solving patterns.
-                    </p>
-                    <a href="https://leetcode.com/u/Abhishek_choudhary_88/" target="_blank" class="cert-link">
-                        View Profile
-                    </a>
-                </div>
-
-                <div class="cert-card">
-                    <img src="leetcode75.png" alt="LeetCode 75">
-                    <h3>LeetCode 75</h3>
-                    <p>LeetCode</p>
-                    <p>
-                        Completed LeetCode 75 roadmap covering arrays,
-                        hashing, recursion, trees, and graphs.
-                    </p>
-                    <a href="https://leetcode.com/u/Abhishek_choudhary_88/" target="_blank" class="cert-link">
-                        View Profile
-                    </a>
-                </div>
-
-                <div class="cert-card">
-                    <img src="sql50.png" alt="SQL 50">
-                    <h3>SQL 50</h3>
-                    <p>LeetCode</p>
-                    <p>
-                        Solved 50 SQL problems involving joins,
-                        subqueries, aggregation, and window functions.
-                    </p>
-                    <a href="https://leetcode.com/u/Abhishek_choudhary_88/" target="_blank" class="cert-link">
-                        View Profile
-                    </a>
-                </div>
-
-                <div class="cert-card">
-                    <img src="intropandas.png" alt="Intro to Pandas">
-                    <h3>Introduction to Pandas</h3>
-                    <p>LeetCode</p>
-                    <p>
-                        Learned Pandas for data manipulation, filtering,
-                        indexing, and aggregation.
-                    </p>
-                    <a href="https://leetcode.com/Aman4717/" target="_blank" class="cert-link">
-                        View Profile
-                    </a>
-                </div>
-            </div> -->
-
-      <!-- Fullscreen viewer -->
-      <div id="cert-viewer" onclick="closeCert()">
-        <img id="cert-full" style="display:none;">
-        <iframe id="cert-pdf" style="display:none;"></iframe>
-      </div>
-
-    </section>
-
-
-
-    <!-- Projects -->
-    <section id="projects" class="reveal">
+    <section id="projects" class="reveal stagger-container">
       <div class="section-subtitle">PROJECTS</div>
       <div class="section-title">Featured Work</div>
-
       <div class="projects-grid">
-
-        <!-- PROJECT CARD -->
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-laptop-code project-icon"></i>
-          </div>
-
+        
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-laptop-code project-icon"></i></div>
           <h3>Laptop Price Prediction</h3>
-
-          <p>
-            Built a Laptop Price Prediction App using machine learning to predict laptop prices based on key features
-            such as brand, processor, RAM, storage, and year of purchase.
-            Applied data preprocessing, feature engineering, and model optimization, and deployed the solution as an
-            interactive application for real-time predictions.
-          </p>
-
-          <div class="project-tags">
-            <span>Python</span>
-            <span>Machine Learning</span>
-            <span>Streamlit</span>
+          <p>Machine learning application to predict laptop prices based on specifications like RAM, storage, and processor.</p>
+          <div class="project-tags"><span>Python</span><span>ML</span><span>Streamlit</span></div>
+          <div class="project-links">
+            <a href="https://laptop-price-prediction-by-abhishek.streamlit.app/" target="_blank" class="project-btn"><i class="fa-solid fa-rocket"></i> Demo</a>
+            <a href="https://github.com/abhishekchoudhary88/Laptop-Price-prediction" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-
-          <a href="https://laptop-price-prediction-by-abhishek.streamlit.app/" target="_blank" class="project-btn">
-            🚀 Live Demo
-          </a>
-
-          <a href="https://github.com/abhishekchoudhary88/Laptop-Price-prediction" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
         </div>
 
-
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-car project-icon"></i>
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-car project-icon"></i></div>
+          <h3>Car Price Prediction</h3>
+          <p>Predicts used car prices based on vehicle features like brand, year, mileage, and transmission.</p>
+          <div class="project-tags"><span>Python</span><span>Scikit-Learn</span><span>Streamlit</span></div>
+          <div class="project-links">
+            <a href="https://loan-approval-app-by-aman.streamlit.app/" target="_blank" class="project-btn"><i class="fa-solid fa-rocket"></i> Demo</a>
+            <a href="https://github.com/abhishekchoudhary88/Car-Price-Prediction" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-
-          <h3>Car Price Prediction System</h3>
-          <p>
-            A machine learning app that predicts used car prices based on vehicle features
-            such as brand, year, mileage, fuel type, and transmission. Built using Python and deployed for real-time
-            predictions.
-          </p>
-
-          <div class="project-tags">
-            <span>Python</span>
-            <span>Scikit-Learn</span>
-            <span>Streamlit</span>
-          </div>
-
-          <a href="https://loan-approval-app-by-aman.streamlit.app/" target="_blank" class="project-btn">
-            <i class="fa-solid"></i> 🚀 Live Demo
-          </a>
-          <a href="https://github.com/abhishekchoudhary88/Car-Price-Prediction" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
         </div>
 
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-film project-icon"></i>
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-film project-icon"></i></div>
+          <h3>Movie Recommendation</h3>
+          <p>Content-based recommendation engine using NLP and cosine similarity to suggest highly personalized movies.</p>
+          <div class="project-tags"><span>NLP</span><span>Cosine Similarity</span></div>
+          <div class="project-links">
+            <a href="#" target="_blank" class="project-btn"><i class="fa-solid fa-rocket"></i> Demo</a>
+            <a href="https://github.com/abhishekchoudhary88/Movie_Recommendation_app" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-
-          <h3>Movie Recommendation System</h3>
-
-          <p>
-            Developed a content-based movie recommendation system using NLP and cosine similarity
-            to suggest personalized movies. Built a Streamlit web app for real-time recommendations.
-          </p>
-
-          <div class="project-tags">
-            <span>Python</span>
-            <span>NLP</span>
-            <span>Scikit-learn</span>
-            <span>Streamlit</span>
-          </div>
-
-          <a href="#" target="_blank" class="project-btn">
-            <i class="fa-solid fa-up-right-from-square"></i> Live Demo
-          </a>
-
-          <a href="https://github.com/abhishekchoudhary88/Movie_Recommendation_app" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
-        </div>
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-bank project-icon"></i>
-          </div>
-
-          <h3>Loan Approval Prediction System</h3>
-
-          <p>
-            Built a machine learning model to predict loan approval based on applicant data.
-            Developed a Streamlit web app for real-time predictions using classification algorithms.
-          </p>
-
-          <div class="project-tags">
-            <span>Python</span>
-            <span>Machine Learning</span>
-            <span>Classification</span>
-            <span>Streamlit</span>
-          </div>
-
-          <a href="#" target="_blank" class="project-btn">
-            <i class="fa-solid fa-up-right-from-square"></i> Live Demo
-          </a>
-
-          <a href="#" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
-        </div>
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-user-xmark project-icon"></i>
-          </div>
-          <h3>Heart Diease Prediction</h3>
-          <p>
-            Built a machine learning classification model to predict heart disease using clinical data,
-            involving data preprocessing, model training & evaluation with Python libraries
-          </p>
-
-          <div class="project-tags">
-            <span>Classification</span>
-            <span>EDA</span>
-            <span>Model Evaluation</span>
-          </div>
-
-          <a href="https://github.com/abhishekchoudhary88/Heart-Disease-Prediction" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> View on GitHub
-          </a>
         </div>
 
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-language project-icon"></i>
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-bank project-icon"></i></div>
+          <h3>Loan Approval Prediction</h3>
+          <p>Classification model built to predict loan approval based on applicant data and financial history.</p>
+          <div class="project-tags"><span>Python</span><span>Classification</span></div>
+          <div class="project-links">
+            <a href="#" target="_blank" class="project-btn"><i class="fa-solid fa-rocket"></i> Demo</a>
+            <a href="#" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-          <h3>Language Detection </h3>
-          <p>
-            Built an NLP-based language detection classifier using TF-IDF and machine learning to
-            automatically identify the language of given text inputs
-          </p>
-
-          <div class="project-tags">
-            <span>Classification</span>
-            <span>Machine Learning</span>
-            <span>EDA</span>
-            <span>Scikit-learn</span>
-          </div>
-
-          <a href="https://github.com/abhishekchoudhary88/Language-Detection" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> View on GitHub
-          </a>
         </div>
 
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-utensils project-icon"></i>
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-heart-pulse project-icon"></i></div>
+          <h3>Heart Disease Prediction</h3>
+          <p>Classification model predicting heart disease using clinical data. Includes extensive EDA.</p>
+          <div class="project-tags"><span>Classification</span><span>EDA</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/Heart-Disease-Prediction" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-          <h3>Zomato Project</h3>
-          <p>
-            Performed data cleaning, data exploration, and visualization on the Zomato restaurant dataset using Python
-            libraries to extract business insights from ratings, cuisines, costs, and other features.
-          </p>
-
-          <div class="project-tags">
-            <span>Data Cleaning</span>
-            <span>Exploratory Data Analysis</span>
-            <span>Visualization</span>
-            <span>Pandas & Matplotlib</span>
-          </div>
-
-          <a href="https://github.com/abhishekchoudhary88/Zomato-project" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> View on GitHub
-          </a>
         </div>
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-film project-icon"></i>
-          </div>
 
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-language project-icon"></i></div>
+          <h3>Language Detection</h3>
+          <p>NLP-based language detection classifier utilizing TF-IDF and ML to automatically identify text languages.</p>
+          <div class="project-tags"><span>NLP</span><span>TF-IDF</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/Language-Detection" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
+          </div>
+        </div>
+
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-utensils project-icon"></i></div>
+          <h3>Zomato EDA Project</h3>
+          <p>Exploratory Data Analysis on Zomato datasets extracting business insights from ratings and cost.</p>
+          <div class="project-tags"><span>Data Cleaning</span><span>EDA</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/Zomato-project" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
+          </div>
+        </div>
+
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-brands fa-netflix project-icon"></i></div>
           <h3>Netflix Movie Analysis</h3>
-
-          <p>
-            Exploratory analysis of Netflix movie dataset using Pandas &
-            Seaborn to extract patterns in genres, ratings, and release years.
-          </p>
-
-          <div class="project-tags">
-            <span>Data Cleaning</span>
-            <span>Exploratory Data Analysis</span>
-            <span>Visualization</span>
-            <span>Pandas & Seaborn</span>
+          <p>In-depth exploratory analysis of Netflix movies finding deep patterns in genres and audience ratings.</p>
+          <div class="project-tags"><span>Pandas</span><span>Seaborn</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/movie-data-anlaysis-netflix" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-
-          <!-- Live Demo button (replace with your Vercel / GitHub Pages link) -->
-          <!-- <a href="https://github.com/abhishekchoudhary88/movie-data-anlaysis-netflix" target="_blank" class="project-btn">
-            <i class="fa-solid fa-up-right-from-square"></i> Live Demo
-          </a> -->
-
-          <!-- GitHub Repo -->
-          <a href="https://github.com/abhishekchoudhary88/movie-data-anlaysis-netflix" target="_blank"
-            class="project-btn">
-            <i class="fa-brands fa-github"></i> GitHub
-          </a>
-        </div>
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-cart-shopping project-icon"></i>
-          </div>
-          <h3>Ecomerce Sales </h3>
-          <p>
-            Created an interactive E-commerce sales dashboard in Power BI to visualize performance and
-            trends with data transformation, DAX KPIs, and interactive visuals.
-          </p>
-
-          <div class="project-tags">
-            <span>Power BI</span>
-            <span>Dashboard</span>
-            <span>Visualization</span>
-          </div>
-
-          <a href="https://github.com/abhishekchoudhary88/Ecomerce-Sales-" target="_blank" class="project-btn">
-            <i class="fa-brands fa-github"></i> View on GitHub
-          </a>
         </div>
 
-        <div class="project-card" data-tilt>
-          <div class="project-header">
-            <i class="fa-solid fa-chart-line project-icon"></i>
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-cart-shopping project-icon"></i></div>
+          <h3>Ecommerce Dashboard</h3>
+          <p>Interactive Power BI dashboard visualizing e-commerce performance with complex data transformations and DAX.</p>
+          <div class="project-tags"><span>Power BI</span><span>DAX</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/Ecomerce-Sales-" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
-          <h3>Car sales Analysis </h3>
-          <p>
-            Built an interactive Power BI dashboard to analyze car details for trends in
-            pricing, sales, and attributes using data preprocessing and visualization
-          </p>
-
-          <div class="project-tags">
-            <span>Power BI</span>
-            <span>Data Visualization</span>
-            <span>Dashboard</span>
-            <span>Data Cleaning</span>
-          </div>
-
-          <a href="https://github.com/abhishekchoudhary88/Car-Details-Analysis-PowerBI" target="_blank"
-            class="project-btn">
-            <i class="fa-brands fa-github"></i> View on GitHub
-          </a>
         </div>
 
+        <div class="project-card stagger-item tilt-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.4" data-tilt-scale="1.08">
+          <div class="project-header"><i class="fa-solid fa-chart-line project-icon"></i></div>
+          <h3>Car Sales Dashboard</h3>
+          <p>Highly interactive Power BI dashboard analyzing car attributes, market trends, and pricing structures.</p>
+          <div class="project-tags"><span>Power BI</span><span>Dashboard</span></div>
+          <div class="project-links">
+            <a href="https://github.com/abhishekchoudhary88/Car-Details-Analysis-PowerBI" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
+          </div>
+        </div>
 
       </div>
     </section>
 
+    <section id="certificates" class="reveal stagger-container">
+      <div class="section-subtitle">CERTIFICATES</div>
+      <div class="section-title">Achievements & Learning</div>
+      <div class="cert-badge-grid">
+        
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('rns_internship.png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="rns_internship.png" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 25px; filter: drop-shadow(0 15px 25px rgba(255, 152, 0, 0.4));" alt="RNS Internship">
+          <p>RNS IT Solutions Internship</p>
+        </div>
+        
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('tipsg_course.png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="tipsg_course.png" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 25px; filter: drop-shadow(0 15px 25px rgba(255, 152, 0, 0.4));" alt="TIPS-G Data Science">
+          <p>TIPS-G Data Science</p>
+        </div>
 
-    <!-- Contact -->
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('python_basic_certificate.png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6"> 
+          <img src="python_basic_certificate.png" onerror="this.src='https://via.placeholder.com/150x100?text=Python+Basic'" alt="Python Basic">
+          <p>Python (Basic)</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('sql_basic_certificate.png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="sql_basic_certificate.png" onerror="this.src='https://via.placeholder.com/150x100?text=SQL+Basic'" alt="SQL Basic">
+          <p>SQL (Basic)</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('SQL(Intermediate).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="SQL(Intermediate).png" onerror="this.src='https://via.placeholder.com/150x100?text=SQL+Intermediate'" alt="SQL Intermediate">
+          <p>SQL (Intermediate)</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('sql_advanced_certificate.png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="sql_advanced_certificate.png" onerror="this.src='https://via.placeholder.com/150x100?text=SQL+Advanced'" alt="SQL Advanced">
+          <p>SQL (Advanced)</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Data_scinece_certificate_(deloit).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Data_scinece_certificate_(deloit).png" onerror="this.src='https://via.placeholder.com/150x100?text=BA+Data+Science'" alt="Data Science British Airways">
+          <p>Data Science BA</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Deloite_(Data Analytics).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Deloite_(Data Analytics).png" onerror="this.src='https://via.placeholder.com/150x100?text=Deloitte+Analytics'" alt="Deloitte Data Analytics">
+          <p>Deloitte – Analytics</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Abhi(eda).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Abhi(eda).png" onerror="this.src='https://via.placeholder.com/150x100?text=IBM+EDA'" alt="IBM EDA">
+          <p>IBM - EDA</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Coursera_ML_With_Python_(Certificate).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Coursera_ML_With_Python_(Certificate).png" onerror="this.src='https://via.placeholder.com/150x100?text=IBM+ML'" alt="IBM ML">
+          <p>IBM - ML</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Coursera_AI(Certificate).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Coursera_AI(Certificate).png" onerror="this.src='https://via.placeholder.com/150x100?text=IBM+AI'" alt="IBM AI">
+          <p>IBM - AI</p>
+        </div>
+        <div class="cert-badge stagger-item tilt-card" onclick="openCert('Coursera_google_(Data Analytics).png')" data-tilt data-tilt-max="25" data-tilt-scale="1.2" data-tilt-glare="true" data-tilt-max-glare="0.6">
+          <img src="Coursera_google_(Data Analytics).png" onerror="this.src='https://via.placeholder.com/150x100?text=Google+Analytics'" alt="Google Data Analytics">
+          <p>Google - Analytics</p>
+        </div>
+      </div>
+      
+      <div id="cert-viewer">
+        <i class="fa-solid fa-xmark close-viewer" onclick="closeCert()"></i>
+        <img id="cert-full" style="display:none;" onerror="this.src='https://via.placeholder.com/800x600?text=Certificate+Preview'">
+        <iframe id="cert-pdf" style="display:none; width:80%; height:80%; border-radius:10px; background:#fff;"></iframe>
+      </div>
+    </section>
+
     <section id="contact" class="reveal">
       <div class="section-subtitle">CONTACT</div>
       <div class="section-title">Let’s Connect</div>
       <div class="grid-2">
-        <div class="card contact-info">
-          <p>📍 Rajasthan, India</p>
-          <p>📧 Email: <strong>abhisekchoudhary88@gmail.com</strong></p>
-          <p>🐙 GitHub: <strong><a href="https://github.com/abhishekchoudhary88" target="_blank">
-                github.com/abhishekchoudhary88</a></strong></p>
-          <p>💼 LinkedIn: <strong><a href="https://www.linkedin.com/in/abhishek-choudhary-65012a303/"
-                target="_blank">View Profile</a></strong></p>
-          <p>📸 Instagram: <strong><a href="https://www.instagram.com/__abhiichoudhary?igsh=ZzF5dTh1cHkyZHgy"
-                target="_blank">
-                @__abhiichoudhary</a></strong></p>
-          <p style="margin-top: 12px; color: var(--muted-text);">
-            Open to internships, projects, and collaborations in Data Science,
-            Machine Learning, and Analytics.
-          </p>
+        <div class="info-card contact-info tilt-card" data-tilt data-tilt-max="8" data-tilt-glare="true" data-tilt-max-glare="0.25">
+          <h3 class="pop-out">Get In Touch</h3>
+          <p class="pop-out" style="margin-top:20px; color:var(--muted-text);">Open to internships, freelance projects, collaborations, and opportunities in Data Science, ML, and Analytics.</p>
+          <hr class="pop-out" style="border-color:var(--glass-border-light); margin: 30px 0;">
+          <p class="pop-out"><i class="fa-solid fa-location-dot" style="color:var(--accent); width:30px; font-size:1.5rem;"></i> Rajasthan, India</p>
+          <p class="pop-out"><i class="fa-solid fa-envelope" style="color:var(--accent); width:30px; font-size:1.5rem;"></i> <a href="mailto:abhisekchoudhary88@gmail.com">abhisekchoudhary88@gmail.com</a></p>
+          <p class="pop-out"><i class="fa-brands fa-linkedin" style="color:var(--accent); width:30px; font-size:1.5rem;"></i> <a href="https://www.linkedin.com/in/abhishek-choudhary-65012a303/" target="_blank">LinkedIn Profile</a></p>
+          <p class="pop-out"><i class="fa-brands fa-github" style="color:var(--accent); width:30px; font-size:1.5rem;"></i> <a href="https://github.com/abhishekchoudhary88" target="_blank">GitHub Profile</a></p>
         </div>
 
-        <div class="card">
-          <h3>Send me a message</h3>
-
-          <form action="https://formsubmit.co/abhisekchoudhary88@gmail.com" method="POST" class="contact-form">
-
-            <!-- REQUIRED FOR WORKING -->
-            <input type="hidden" name="_next" value="https://amanchoudhary4717.github.io/thankyou.html">
-            <input type="hidden" name="_subject" value="New Message From Your Portfolio!">
+        <div class="info-card tilt-card" data-tilt data-tilt-max="6" data-tilt-glare="true" data-tilt-max-glare="0.2">
+          <h3 class="pop-out">Send Me a Message</h3>
+          <form action="https://formsubmit.co/abhisekchoudhary88@gmail.com" method="POST" class="contact-form pop-out">
+            <input type="hidden" name="_subject" value="New Message from Abhishek's Portfolio!">
             <input type="hidden" name="_captcha" value="false">
-
             <input type="text" name="name" placeholder="Your Name" required>
             <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-
-            <button type="submit" class="btn-primary">
+            <textarea name="message" rows="5" placeholder="Write your message here..." required></textarea>
+            <button type="submit" class="btn-primary" style="justify-content:center; padding:18px; font-size:1.2rem; margin-top: 15px;">
               <i class="fa-solid fa-paper-plane"></i> Send Message
             </button>
           </form>
         </div>
-
       </div>
     </section>
+
   </main>
 
   <footer>
-    © 2025 Abhishek Choudhary.❤
+    <p>© 2026 Abhishek Choudhary. Built with <i class="fa-solid fa-bolt" style="color:var(--accent);"></i> & Data.</p>
   </footer>
 
   <script>
-    /* =====================================
-       GLOBAL DOM READY
-    ===================================== */
     document.addEventListener("DOMContentLoaded", () => {
-
+      
       /* =====================================
-         LOADER
+         ADVANCED PARTICLE + BUBBLE BACKGROUND
       ===================================== */
-      const loader = document.getElementById("loader");
-      if (loader) {
-        window.addEventListener("load", () => {
-          loader.style.opacity = "0";
-          setTimeout(() => (loader.style.display = "none"), 600);
-        });
+      const canvas = document.getElementById("particle-canvas");
+      const canvasContainer = document.getElementById("canvas-container");
+      const ctx = canvas.getContext("2d");
+      let particlesArray = [];
+      let bubblesArray = [];
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles();
+      });
+
+      let mouse = { x: null, y: null, radius: 200 };
+      window.addEventListener('mousemove', (event) => {
+        mouse.x = event.x; mouse.y = event.y;
+        let xAxis = (window.innerWidth / 2 - event.pageX) / 40;
+        let yAxis = (window.innerHeight / 2 - event.pageY) / 40;
+        canvasContainer.style.transform = `translate(${xAxis}px, ${yAxis}px) scale(1.05)`;
+      });
+
+      class Particle {
+        constructor(x, y, directionX, directionY, size, color) {
+          this.x = x; this.y = y;
+          this.directionX = directionX; this.directionY = directionY;
+          this.size = size; this.color = color;
+        }
+        draw() {
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+          ctx.fillStyle = document.documentElement.getAttribute("data-theme") === "light" ? '#ff9800' : '#ffffff';
+          ctx.fill();
+        }
+        update() {
+          if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+          if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+          
+          let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < mouse.radius + this.size) {
+            if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 4;
+            if (mouse.x > this.x && this.x > this.size * 10) this.x -= 4;
+            if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 4;
+            if (mouse.y > this.y && this.y > this.size * 10) this.y -= 4;
+          }
+          this.x += this.directionX; this.y += this.directionY;
+          this.draw();
+        }
       }
 
-      const glow = document.querySelector(".mouse-glow");
+      class Bubble {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 25 + 5;
+          this.speedX = Math.random() * 3 - 1.5; 
+          this.speedY = Math.random() * 3 - 1.5;
+          const colors = ['255, 152, 0', '255, 61, 113', '0, 229, 255'];
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+          ctx.fillStyle = `rgba(${this.color}, ${this.opacity * 0.4})`;
+          ctx.fill();
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(${this.color}, ${this.opacity})`;
+          ctx.stroke();
+        }
+        update() {
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x + this.size > canvas.width || this.x - this.size < 0) this.speedX = -this.speedX;
+          if (this.y + this.size > canvas.height || this.y - this.size < 0) this.speedY = -this.speedY;
+          
+          let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius + this.size) {
+            this.x -= dx / 10; this.y -= dy / 10;
+          }
+          this.draw();
+        }
+      }
 
-      document.addEventListener("mousemove", e => {
-        glow.style.left = e.clientX + "px";
-        glow.style.top = e.clientY + "px";
+      function initParticles() {
+        particlesArray = []; bubblesArray = [];
+        let numberOfParticles = (canvas.height * canvas.width) / 12000;
+        let numberOfBubbles = window.innerWidth < 768 ? 50 : 150;
+        
+        for (let i = 0; i < numberOfParticles; i++) {
+          let size = (Math.random() * 2) + 1;
+          let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+          let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+          let directionX = (Math.random() * 1) - 0.5;
+          let directionY = (Math.random() * 1) - 0.5;
+          particlesArray.push(new Particle(x, y, directionX, directionY, size, '#ffffff'));
+        }
+        
+        for (let i = 0; i < numberOfBubbles; i++) {
+          bubblesArray.push(new Bubble());
+        }
+      }
+
+      function animateParticles() {
+        requestAnimationFrame(animateParticles);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        for (let i = 0; i < bubblesArray.length; i++) { bubblesArray[i].update(); }
+        for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
+        connectParticles();
+      }
+
+      function connectParticles() {
+        let opacityValue = 1;
+        for (let a = 0; a < particlesArray.length; a++) {
+          for (let b = a; b < particlesArray.length; b++) {
+            let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                           ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+            if (distance < (canvas.width / 8) * (canvas.height / 8)) {
+              opacityValue = 1 - (distance / 10000);
+              let themeColor = document.documentElement.getAttribute("data-theme") === "light" ? `rgba(255,152,0,${opacityValue})` : `rgba(255,255,255,${opacityValue * 0.3})`;
+              ctx.strokeStyle = themeColor;
+              ctx.lineWidth = 1; ctx.beginPath();
+              ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+              ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+      initParticles(); animateParticles();
+
+      /* =====================================
+         MAGNETIC MOUSE CURSOR
+      ===================================== */
+      const cursorGlow = document.getElementById("cursor-glow");
+      document.addEventListener("mousemove", (e) => {
+        cursorGlow.style.left = e.clientX + "px"; cursorGlow.style.top = e.clientY + "px";
       });
-      VanillaTilt.init(document.querySelectorAll(".project-card"), {
-        max: 12,
-        speed: 400,
-        glare: true,
-        "max-glare": 0.3,
+      document.querySelectorAll("a, button, .tilt-card, .skill-pill, .cert-badge").forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          cursorGlow.style.width = "600px"; cursorGlow.style.height = "600px";
+        });
+        el.addEventListener("mouseleave", () => {
+          cursorGlow.style.width = "450px"; cursorGlow.style.height = "450px";
+        });
       });
+
+      /* =====================================
+         LOADER & PERFECT PAGE ENTRY
+      ===================================== */
+      const loader = document.getElementById("loader");
+      
+      const removeLoader = () => {
+        window.scrollTo(0, 0); 
+        loader.style.opacity = "0"; 
+        setTimeout(() => (loader.style.display = "none"), 400);
+      };
+      
+      // FIX 3: Immediately clear loader on render to ensure it never gets stuck
+      removeLoader();
+      window.addEventListener("load", removeLoader);
+
       const enterBtn = document.getElementById("enter-btn");
       const welcomeScreen = document.getElementById("welcome-screen");
+      const navBar = document.getElementById('navbar');
+      const homeWrapper = document.getElementById('home-wrapper');
 
       enterBtn.addEventListener("click", () => {
-        welcomeScreen.classList.add("hide-welcome");
+        window.scrollTo(0, 0);
 
+        welcomeScreen.classList.add("hide-welcome");
+        setTimeout(() => welcomeScreen.style.display = "none", 600);
+        
+        document.body.classList.remove("locked");
+        
         setTimeout(() => {
-          welcomeScreen.style.display = "none";
-        }, 1000);
+          navBar.style.transform = "translateY(0)";
+          navBar.style.transition = "transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+          homeWrapper.classList.add("hero-visible");
+        }, 150);
       });
+
+      /* =====================================
+         SMART NAVBAR & MOBILE MENU
+      ===================================== */
+      let lastScrollY = window.scrollY;
+      window.addEventListener('scroll', () => {
+        if (lastScrollY < window.scrollY && window.scrollY > 150) {
+          navBar.classList.add('nav-hidden');
+        } else {
+          navBar.classList.remove('nav-hidden');
+        }
+        lastScrollY = window.scrollY;
+      });
+
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+      mobileMenuBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        const icon = mobileMenuBtn.querySelector("i");
+        icon.classList.toggle("fa-bars"); icon.classList.toggle("fa-xmark");
+      });
+      
+      navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          mobileMenuBtn.querySelector("i").classList.replace("fa-xmark", "fa-bars");
+        });
+      });
+
+      /* =====================================
+         THEME TOGGLE
+      ===================================== */
+      const themeToggle = document.getElementById("themeToggle");
+      const htmlEl = document.documentElement;
+      const themeIcon = themeToggle.querySelector("i");
+      const themeText = themeToggle.querySelector("span");
+
+      function setTheme(mode) {
+        htmlEl.setAttribute("data-theme", mode);
+        localStorage.setItem("theme", mode);
+        if (mode === "light") {
+          themeIcon.className = "fa-solid fa-moon"; themeText.textContent = "Dark";
+        } else {
+          themeIcon.className = "fa-regular fa-sun"; themeText.textContent = "Light";
+        }
+      }
+      
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = htmlEl.getAttribute("data-theme");
+        setTheme(currentTheme === "light" ? "dark" : "light");
+      });
+
       /* =====================================
          TYPING ANIMATION
       ===================================== */
       const typingEl = document.getElementById("typingText");
-      const titles = [
-        "Data Science Enthusiast",
-        "Machine Learning Specialist",
-        "SQL Developer",
-        "Data Analyst",
-        "Deep Learning Engineer"
-      ];
-
-      let titleIndex = 0;
-      let charIndex = 0;
+      const titles = [ "Data Science Enthusiast", "Machine Learning Specialist", "AI Developer", "Data Analyst" ];
+      let titleIndex = 0; let charIndex = 0;
 
       function typeTitle() {
         if (!typingEl) return;
-
         if (charIndex < titles[titleIndex].length) {
           typingEl.textContent += titles[titleIndex][charIndex++];
-          setTimeout(typeTitle, 90);
+          setTimeout(typeTitle, 60);
         } else {
-          setTimeout(eraseTitle, 1200);
+          setTimeout(eraseTitle, 2000);
         }
       }
-
       function eraseTitle() {
         if (charIndex > 0) {
           typingEl.textContent = titles[titleIndex].slice(0, --charIndex);
-          setTimeout(eraseTitle, 50);
+          setTimeout(eraseTitle, 30);
         } else {
           titleIndex = (titleIndex + 1) % titles.length;
-          setTimeout(typeTitle, 300);
+          setTimeout(typeTitle, 400);
         }
       }
-
-      typeTitle();
-
-      /* =====================================
-         THEME TOGGLE (CLEAN + PERSISTENT)
-      ===================================== */
-      const themeToggle = document.getElementById("themeToggle");
-      const body = document.body;
-
-      function setTheme(mode) {
-        if (mode === "light") {
-          body.classList.add("light");
-        } else {
-          body.classList.remove("light");
-        }
-
-        localStorage.setItem("theme", mode);
-
-        const icon = themeToggle.querySelector("i");
-        const text = themeToggle.querySelector("span");
-
-        if (mode === "light") {
-          icon.className = "fa-regular fa-sun";
-          text.textContent = "Light";
-        } else {
-          icon.className = "fa-regular fa-moon";
-          text.textContent = "Dark";
-        }
-      }
-      const savedTheme = localStorage.getItem("theme") || "dark";
-      setTheme(savedTheme);
-
-      themeToggle?.addEventListener("click", () => {
-        setTheme(body.classList.contains("light") ? "dark" : "light");
-      });
+      setTimeout(typeTitle, 1500);
 
       /* =====================================
-         SCROLL REVEAL
+         LIGHTNING FAST SCROLL REVEAL
       ===================================== */
-      const reveals = document.querySelectorAll(".reveal");
-      const revealObserver = new IntersectionObserver(
-        entries => {
+      const reveals = document.querySelectorAll(".reveal:not(#home-wrapper), .stagger-container .stagger-item");
+      
+      const revealObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add("visible");
-              revealObserver.unobserve(entry.target);
+              observer.unobserve(entry.target); 
             }
           });
-        },
-        { threshold: 0.15 }
+        }, { threshold: 0.1 } 
       );
+      
       reveals.forEach(el => revealObserver.observe(el));
+
       window.addEventListener("scroll", () => {
         let scroll = document.documentElement.scrollTop;
         let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById("progress-bar").style.width = (scroll / height) * 100 + "%";
       });
-      /* =====================================
-         HERO CANVAS BUBBLES
-      ===================================== */
-      const canvas = document.getElementById("hero-canvas");
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        let bubbles = [];
-        let cw, ch;
-
-        function initCanvas() {
-          cw = canvas.width = canvas.offsetWidth;
-          ch = canvas.height = canvas.offsetHeight;
-          bubbles = Array.from({ length: 40 }, () => ({
-            x: Math.random() * cw,
-            y: Math.random() * ch,
-            r: 3 + Math.random() * 6,
-            vy: -0.3 - Math.random() * 0.7,
-            vx: (Math.random() - 0.5) * 0.3,
-            alpha: 0.2 + Math.random() * 0.5
-          }));
-        }
-
-        function draw() {
-          ctx.clearRect(0, 0, cw, ch);
-          bubbles.forEach(b => {
-            const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-            g.addColorStop(0, `rgba(255,255,255,${b.alpha})`);
-            g.addColorStop(1, "rgba(255,255,255,0)");
-            ctx.fillStyle = g;
-            ctx.beginPath();
-            ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-            ctx.fill();
-
-            b.x += b.vx;
-            b.y += b.vy;
-            if (b.y + b.r < 0) {
-              b.y = ch + b.r;
-              b.x = Math.random() * cw;
-            }
-          });
-          requestAnimationFrame(draw);
-        }
-
-        window.addEventListener("resize", initCanvas);
-        initCanvas();
-        draw();
-      }
 
       /* =====================================
-         VANILLA TILT
+         CERTIFICATE VIEWER (MODAL)
       ===================================== */
-      if (window.VanillaTilt) {
-        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
-          max: 10,
-          speed: 300,
-          glare: true,
-          "max-glare": 0.2
-        });
-      }
-
-      /* =====================================
-         CERTIFICATES VIEWER
-      ===================================== */
-      const certImages = [
-        "python_basic_certificate.png",
-        "sql_basic_certificate.png",
-        "SQL(Intermediate).png",
-        "sql_advanced_certificate.png",
-        "Data_scinece_certificate_(deloit).png",
-        "Deloite_(Data Analytics).png",
-        "Abhi(eda).png",
-        "Coursera_ML_With_Python_(Certificate).png",
-        "Coursera_AI(Certificate).png",
-        "Coursera_google_(Data Analytics).png"
-      ];
-      let currentIndex = 0;
-      let slideshowTimer;
-
       const viewer = document.getElementById("cert-viewer");
       const fullImg = document.getElementById("cert-full");
       const pdfViewer = document.getElementById("cert-pdf");
 
       window.openCert = function (path) {
-        const index = certImages.indexOf(path);
-
-        if (index !== -1) {
-          currentIndex = index;
-        } else {
-          currentIndex = 0;
-        }
-
         viewer.style.display = "flex";
-        updateViewer();
-        startSlideshow();
+        setTimeout(() => viewer.classList.add("active"), 10);
+        fullImg.style.display = "none"; pdfViewer.style.display = "none";
+
+        if (path.toLowerCase().endsWith(".pdf")) {
+          pdfViewer.src = path; pdfViewer.style.display = "block";
+        } else {
+          fullImg.src = path; fullImg.style.display = "block";
+        }
       };
 
       window.closeCert = function () {
-        viewer.style.display = "none";
-        stopSlideshow();
+        viewer.classList.remove("active");
+        setTimeout(() => { viewer.style.display = "none"; }, 400);
       };
-
-      function updateViewer() {
-        const file = certImages[currentIndex];
-        const isPDF = file.toLowerCase().endsWith(".pdf");
-
-        fullImg.style.display = "none";
-        pdfViewer.style.display = "none";
-
-        if (isPDF) {
-          pdfViewer.src = file;
-          pdfViewer.style.display = "block";
-        } else {
-          fullImg.src = file;
-          fullImg.style.display = "block";
-        }
-      }
-
-      window.nextCert = function () {
-        currentIndex = (currentIndex + 1) % certImages.length;
-        updateViewer();
-      };
-
-      window.prevCert = function () {
-        currentIndex =
-          (currentIndex - 1 + certImages.length) % certImages.length;
-        updateViewer();
-      };
-
-      function startSlideshow() {
-        // ❌ Disabled auto slideshow
-      }
-
-      function stopSlideshow() {
-        clearInterval(slideshowTimer);
-      }
-
-
-      /* Swipe support */
-      let startX = 0;
-
-      viewer.addEventListener("touchstart", e => {
-        startX = e.touches[0].clientX;
-      });
-
-      viewer.addEventListener("touchend", e => {
-        const diff = e.changedTouches[0].clientX - startX;
-        if (Math.abs(diff) > 60) {
-          stopSlideshow();
-          diff < 0 ? nextCert() : prevCert();
-        }
-      });
 
       viewer.addEventListener("click", (e) => {
-        if (e.target.id === "cert-viewer") {
-          closeCert();
-        }
+        if (e.target.id === "cert-viewer") closeCert();
       });
     });
-
   </script>
-
-
 </body>
-
-
 </html>
