@@ -246,6 +246,13 @@
     .profile-socials a:hover { background: var(--accent); color: #fff; transform: translateY(-5px); border-color: transparent;}
 
     .hero-right { flex: 2 1 400px; }
+    
+    /* NEW CSS for the hero text shadow card */
+    .hero-text-card {
+      padding: 40px;
+      border-radius: 20px;
+    }
+
     .hero-greeting { font-size: 14px; letter-spacing: 3px; font-weight: bold; color: var(--accent); margin-bottom: 20px; display: inline-block; padding: 8px 20px; border-radius: 20px; background: rgba(255,152,0,0.1); border: 1px solid rgba(255,152,0,0.3); }
     .hero-title { font-size: 4rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; letter-spacing: -1px; }
     .hero-title span { background: linear-gradient(to right, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -292,7 +299,7 @@
     .project-card p { font-size: 1rem; color: var(--muted-text); margin-bottom: 25px; line-height: 1.6; flex-grow: 1; }
     
     .project-tags { margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 8px; }
-    .project-tags span { padding: 5px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-light); border-radius: 8px; font-size: 0.85rem; color: var(--text-color);}
+    .project-tags span { padding: 5px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-light); border-radius: 8px; font-size: 0.85rem; color: var(--text-color); display: flex; align-items: center; gap: 6px;}
     
     .project-links { display: flex; gap: 15px; flex-wrap: wrap; }
     .project-btn {
@@ -361,6 +368,7 @@
       .mobile-menu-btn { display: block; }
       
       .hero-title { font-size: 2.8rem; }
+      .hero-text-card { padding: 25px 20px; }
       .welcome-content h1 { font-size: 2.5rem; }
       .welcome-content p { font-size: 1rem; letter-spacing: 2px;}
       .hero-inner { flex-direction: column-reverse; text-align: center; }
@@ -436,27 +444,29 @@
       <section id="home">
         <div class="hero-inner">
           <div class="hero-right">
-            <div class="hero-greeting"><i class="fa-solid fa-microchip"></i> AI • ML • DATA SCIENCE</div>
-            <div class="hero-title">
-              Hi, I'm <span>Abhishek Choudhary</span>
-            </div>
-            <div class="hero-typing">
-              <span id="typingText"></span>
-            </div>
-            <p class="hero-text">
-              I build intelligent AI-powered applications using Machine Learning, Deep Learning, and NLP.
-              Experienced in developing end-to-end solutions — from data preprocessing to model deployment.
-            </p>
-            <div class="hero-buttons">
-              <a href="#projects" class="btn-primary">
-                <i class="fa-solid fa-rocket"></i> View Projects
-              </a>
-              <a href="Abhishek_Choudhary_Resume(Photo).pdf" target="_blank" class="btn-ghost">
-                <i class="fa-regular fa-eye"></i> View Resume
-              </a>
-              <a href="Abhishek_Choudhary_Resume(Photo).pdf" download class="btn-ghost">
-                <i class="fa-solid fa-download"></i> Download
-              </a>
+            <div class="hero-text-card tilt-card" data-tilt data-tilt-max="3" data-tilt-perspective="1000">
+              <div class="hero-greeting"><i class="fa-solid fa-microchip"></i> AI • ML • DATA SCIENCE</div>
+              <div class="hero-title pop-out">
+                Hi, I'm <span>Abhishek Choudhary</span>
+              </div>
+              <div class="hero-typing pop-out">
+                <span id="typingText"></span>
+              </div>
+              <p class="hero-text pop-out">
+                I build intelligent AI-powered applications using Machine Learning, Deep Learning, and NLP.
+                Experienced in developing end-to-end solutions — from data preprocessing to model deployment.
+              </p>
+              <div class="hero-buttons pop-out">
+                <a href="#projects" class="btn-primary">
+                  <i class="fa-solid fa-rocket"></i> View Projects
+                </a>
+                <a href="Abhishek_Choudhary_Resume(Photo).pdf" target="_blank" class="btn-ghost">
+                  <i class="fa-regular fa-eye"></i> View Resume
+                </a>
+                <a href="Abhishek_Choudhary_Resume(Photo).pdf" download class="btn-ghost">
+                  <i class="fa-solid fa-download"></i> Download
+                </a>
+              </div>
             </div>
           </div>
 
@@ -572,16 +582,21 @@
             <a href="https://github.com/abhishekchoudhary88/Laptop-Price-prediction" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
         </div>
-          <div class="project-card tilt-card" data-tilt data-tilt-max="5">
-          <div class="project-header"><i class="fa-solid fa-laptop-code project-icon"></i></div>
+
+        <div class="project-card tilt-card" data-tilt data-tilt-max="5">
+          <div class="project-header"><i class="fa-solid fa-robot project-icon"></i></div>
           <h3>Kimi-Model Chatbot</h3>
           <p>Kimi AI Chatbot: Developed an AI-powered chatbot using the Kimi LLM to generate intelligent, context-aware responses through API integration. Demonstrates skills in Generative AI, Prompt Engineering, NLP, and Python development.</p>
-          <div class="project-tags"><span>Python</span><span>ML</span><span>Streamlit</span></div>
+          <div class="project-tags">
+            <span><i class="fa-brands fa-python"></i> Python</span>
+            <span><i class="fa-solid fa-brain"></i> ML</span>
+            <span><i class="fa-solid fa-layer-group"></i> Streamlit</span>
+          </div>
           <div class="project-links">
-            <!-- <a href="https://laptop-price-prediction-by-abhishek.streamlit.app/" target="_blank" class="project-btn"><i class="fa-solid fa-rocket"></i> Demo</a> -->
             <a href="https://github.com/abhishekchoudhary88/Chatbot" target="_blank" class="project-btn"><i class="fa-brands fa-github"></i> Code</a>
           </div>
         </div>
+
         <div class="project-card tilt-card" data-tilt data-tilt-max="5">
           <div class="project-header"><i class="fa-solid fa-car project-icon"></i></div>
           <h3>Car Price Prediction</h3>
