@@ -805,19 +805,20 @@ Completed a 3-month internship focused on Data Science, Machine Learning, Deep L
 
         <div class="info-card tilt-card" data-tilt data-tilt-max="5">
           <h3>Send Me a Message</h3>
-          <form action="https://formsubmit.co/abhisekchoudhary88@gmail.com" method="POST" class="contact-form">
-            <input type="hidden" name="_subject" value="New Message from Portfolio!">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
-            
-            <button type="submit" class="btn-primary" style="justify-content:center; padding:15px; font-size:1.1rem; width:100%; border-radius:12px;">
-              <i class="fa-solid fa-paper-plane"></i> Send Message
-            </button>
-          </form>
+          <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+  <!-- Niche value mein apni Access Key daalna jo mail pe aayi hai -->
+  <input type="hidden" name="access_key" value="f49bd05b-db5f-4409-a09c-aa940bcb2572">
+  
+  <input type="hidden" name="subject" value="New Message from Portfolio!">
+  
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <textarea name="message" rows="4" placeholder="Write your message here..." required></textarea>
+  
+  <button type="submit" class="btn-primary" style="justify-content:center; padding:15px; font-size:1.1rem; width:100%; border-radius:12px;">
+    <i class="fa-solid fa-paper-plane"></i> Send Message
+  </button>
+</form>
         </div>
       </div>
     </section>
