@@ -327,22 +327,33 @@
     .close-viewer { position: absolute; top: 20px; right: 30px; color: white; font-size: 2.5rem; cursor: pointer; transition: color 0.2s; }
     .close-viewer:hover { color: var(--accent-secondary); }
 
-    /* =====================================
-       CONTACT SECTION
-    ===================================== */
-    .contact-info p { margin-bottom: 20px; font-size: 1.1rem; display: flex; align-items: center; gap: 15px; }
-    .contact-info a { color: var(--accent); transition: color 0.2s; }
-    .contact-info a:hover { color: var(--accent-secondary); }
-    
-    .contact-form { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
-    .contact-form input, .contact-form textarea {
-      width: 100%; padding: 15px 20px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border-light);
-      border-radius: 12px; color: var(--text-color); font-size: 1rem; font-family: inherit; transition: border-color 0.2s;
-    }
-    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.05); }
-    
-    footer { text-align: center; padding: 40px 20px; font-size: 16px; color: var(--muted-text); border-top: 1px solid var(--glass-border); margin-top: 80px; }
+  <form
+  action="https://formsubmit.co/YOUR_EMAIL@gmail.com"
+  method="POST"
+  class="contact-form"
+>
+  <input
+    type="text"
+    name="name"
+    placeholder="Your Name"
+    required
+  >
 
+  <input
+    type="email"
+    name="email"
+    placeholder="Your Email"
+    required
+  >
+
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    required
+  ></textarea>
+
+  <button type="submit">Send Message</button>
+</form>
     /* =====================================
        OPTIMIZED SCROLL ANIMATIONS
     ===================================== */
